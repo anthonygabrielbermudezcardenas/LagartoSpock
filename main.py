@@ -11,8 +11,13 @@ SAVEFILE = 'save.json'
 victorias = [["P", "T"], ["PA", "P"], ["T", "PA"], ["P", "L"], ["L", "PA"], ["L", "S"], ["S", "T"], ["S", "PA"]]
 opciones = ["P", "PA", "T", "L", "S"]
 players = {}
-
-
+players = loadGame(player
+def Intro():
+    print("¡BIENVENIDO ESTAS JUGANDO A PIEDRA, PAPEL, TIJERAS, LAGARTO, SPOCK!")
+    print("¿Cómo te llamas?") 
+    player = input("Ingresa tu nombre: ")
+ 
+    
 def userWins(msg):
     print(msg)
     players[player]["Victorias"] = players[player]["Victorias"] + 1
