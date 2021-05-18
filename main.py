@@ -10,19 +10,7 @@ SAVE_EACH_CYCLE = False
 SAVEFILE = 'save.json'
 victorias = [["P", "T"], ["PA", "P"], ["T", "PA"], ["P", "L"], ["L", "PA"], ["L", "S"], ["S", "T"], ["S", "PA"]]
 opciones = ["P", "PA", "T", "L", "S"]
-# players = None
-players = {
-    "juan": {
-        "Victorias": 0,
-        "Derrotase": 0,
-        "Empates": 0
-    },
-    "manuel": {
-        "Victorias": 0,
-        "Derrotas": 0,
-        "Empates": 0
-    }
-}
+players = {}
 
 
 def userWins(msg):
