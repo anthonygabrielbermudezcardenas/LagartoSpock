@@ -1,7 +1,13 @@
 import random
 import json
 import os
+import time
 from messages import msg
+startTime = time.time()
+elapsedTime = time.time()-startTime
+gmTime = time.gmtime(elapsedTime)
+#print(time.strftime("%H:%M:%S", gmTime))
+endTime = time.time()
 
 print("¡BIENVENIDO ESTAS JUGANDO A PIEDRA, PAPEL, TIJERAS, LAGARTO, SPOCK!")
 
@@ -13,8 +19,10 @@ opciones = ["P", "PA", "T", "L", "S"]
 players = {
     "player": 0
 }
+
+
 def userWins(msg):
-    print(msg)
+    print(msg)   
     players[player]["Victorias"] = players[player]["Victorias"] + 1
 
 
@@ -45,6 +53,8 @@ def userInput():
 def saveGame(players):
     with open(SAVEFILE, "w") as outfile:
         json.dump(players, outfile, indent=4)
+        endTime = time.time()
+        print(time.strftime("%H:%M:%S", gmTime))
 
 
 def loadGame(player):
@@ -71,6 +81,7 @@ def loadGame(player):
 print("¿Cómo te llamas?") 
 player = input("Ingresa tu nombre: ")
 players = loadGame(player)
+
 
 while True:
     user = userInput()
