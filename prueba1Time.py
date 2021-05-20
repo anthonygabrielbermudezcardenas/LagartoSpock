@@ -1,6 +1,7 @@
 import random
 import json
 import os
+import time
 from messages import msg
 
 print("¡BIENVENIDO ESTAS JUGANDO A PIEDRA, PAPEL, TIJERAS, LAGARTO, SPOCK!")
@@ -10,13 +11,24 @@ SAVE_EACH_CYCLE = False
 SAVEFILE = 'save.json'
 victorias = [["P", "T"], ["PA", "P"], ["T", "PA"], ["P", "L"], ["L", "PA"], ["L", "S"], ["S", "T"], ["S", "PA"]]
 opciones = ["P", "PA", "T", "L", "S"]
-
 players = {
     "player": 0
 }
 
+
+def inicio():
+    startTime = time.time()
+    return inicio
+
+
+def ejecucion():
+    elapsedTime = time.time() - startTime()
+    gmTime = time.gmtime(elapsedTime)
+    print(time.strftime("%H:%M:%S", gmTime))
+
+
 def userWins(msg):
-    print(msg)
+    print(msg)   
     players[player]["Victorias"] = players[player]["Victorias"] + 1
 
 
@@ -37,6 +49,7 @@ def userInput():
     if user == "SA":
         if SAVE_ON_EXIT:
             saveGame(players)
+            ejecucion()
         exit()
     while user not in opciones:
         print("\nOpcion no valida: elija de nuevo")
@@ -47,6 +60,7 @@ def userInput():
 def saveGame(players):
     with open(SAVEFILE, "w") as outfile:
         json.dump(players, outfile, indent=4)
+        ejecucion()
 
 
 def loadGame(player):
@@ -55,6 +69,7 @@ def loadGame(player):
             players = json.load(json_file)
             if player in players:
                 print(players[player])
+                inicio()
             else:
                 players[player] = {
                     "Victorias": 0,
@@ -70,9 +85,11 @@ def loadGame(player):
             "Empates": 0
         }}
 
-print("¿Cómo te llamas?") 
+
+print("¿Cómo te llamas?")
 player = input("Ingresa tu nombre: ")
 players = loadGame(player)
+
 
 while True:
     user = userInput()
@@ -91,3 +108,20 @@ while True:
     print(players[player])
     if SAVE_EACH_CYCLE:
         saveGame(players)
+
+
+stats = {
+    "inputGood": 0,
+    "totalTeclas": 0
+}
+
+"""
+def stats():
+    if input(player) == "SA":
+        players[player]["inputGood"] = players[player["inputGood"] + 1
+
+    if input(player) in "opciones":
+        players[player]["inputGood"] = players[player]["inputGood"] + 1
+    else:
+        players[player]["totalTeclas"] = players[player]["totalTeclas"] + 1
+"""
