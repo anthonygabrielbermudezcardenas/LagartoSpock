@@ -1,6 +1,6 @@
 
 msg = {
-    "Empates": "\nEmpate",
-    "Victorias": "\nGanaste!!",
-    "Derrotas": "\nPerdiste!!!"
+    "empates": "\nEmpate",
+    "victorias": "\nGanaste!!",
+    "derrotas": "\nPerdiste!!!"
 }

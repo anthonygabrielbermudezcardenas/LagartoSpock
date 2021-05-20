@@ -70,20 +70,19 @@ def loadGame(player):
             players = json.load(json_file)
             if player in players:
                 print(players[player])
-                inicio()
             else:
                 players[player] = {
-                    "Victorias": 0,
-                    "Derrotas": 0,
-                    "Empates": 0
+                    "victorias": 0,
+                    "derrotas": 0,
+                    "empates": 0
                 }
             return players
 
     else:
         return {player: {
-            "Victorias": 0,
-            "Derrotas": 0,
-            "Empates": 0
+            "victorias": 0,
+            "derrotas": 0,
+            "empates": 0
         }}
 
 
@@ -106,11 +105,11 @@ def main():
         pc = random.choice(opciones)
         print(f"La pc ha selecionado {pc}")
         if user == pc:
-            updatePlayStats("Empates")
+            updatePlayStats("empates")
         elif [user, pc] in victorias:
-            updatePlayStats("Victorias")
+            updatePlayStats("victorias")
         else:
-            updatePlayStats("Derrotas")
+            updatePlayStats("derrotas")
 
         print(players[player])
         if SAVE_EACH_CYCLE:
