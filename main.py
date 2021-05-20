@@ -1,51 +1,66 @@
 import random
 import json
 import os
+import time
 from messages import msg
 
-print("¡BIENVENIDO ESTAS JUGANDO A PIEDRA, PAPEL, TIJERAS, LAGARTO, SPOCK!")
 
 SAVE_ON_EXIT = True
 SAVE_EACH_CYCLE = False
 SAVEFILE = 'save.json'
 victorias = [["P", "T"], ["PA", "P"], ["T", "PA"], ["P", "L"], ["L", "PA"], ["L", "S"], ["S", "T"], ["S", "PA"]]
 opciones = ["P", "PA", "T", "L", "S"]
-
 players = {
     "player": 0
 }
 
-def userWins(msg):
-    print(msg)
-    players[player]["Victorias"] = players[player]["Victorias"] + 1
+startTime = None
+stats = {
+    "inputGood": 0,
+    "totalTeclas": 0
+}
 
 
-def userLoses(msg):
-    print(msg)
-    players[player]["Derrotas"] = players[player]["Derrotas"] + 1
+def updateTimeStats():
+    stats['elapsedTime'] = time.time() - startTime
 
 
-def userDraw(msg):
-    print(msg)
-    players[player]["Empates"] = players[player]["Empates"] + 1
+def updatePlayStats(status):
+    players[player][status] += 1
+    print(msg[status])
+
+
+def endGame():
+    if SAVE_ON_EXIT:
+        saveGame(players)
+
+    gmTime = time.gmtime(stats['elapsedTime'])
+    print(time.strftime("%H:%M:%S", gmTime))
+    exit()
 
 
 def userInput():
-    print("Elije una de estas tres opciones: (P)iedra, (PA)pel , (T)ijeras, (L)agarto, (S)pock y si quiere salir: Salir(SA)")
-    user = input(opciones)
-
-    if user == "SA":
-        if SAVE_ON_EXIT:
-            saveGame(players)
-        exit()
+    global stats
+    user = None
+    firstTime = True
     while user not in opciones:
-        print("\nOpcion no valida: elija de nuevo")
-        user = input("Elije: P, PA, T, L, S ")
+        if not firstTime:
+            print("\nOpcion no valida: elija de nuevo")
+        firstTime = False
+        user = input("Elije una de estas tres opciones: (P)iedra, (PA)pel , (T)ijeras, (L)agarto, (S)pock y si quiere salir: Salir(SA)")
+        stats["totalTeclas"] += 1
+
+        if user == "SA":
+            endGame()
+
+    stats["inputGood"] += 1
+
     return user
 
 
 def saveGame(players):
     with open(SAVEFILE, "w") as outfile:
+        updateTimeStats()
         json.dump(players, outfile, indent=4)
 
 
@@ -55,6 +70,7 @@ def loadGame(player):
             players = json.load(json_file)
             if player in players:
                 print(players[player])
+                inicio()
             else:
                 players[player] = {
                     "Victorias": 0,
@@ -70,24 +86,35 @@ def loadGame(player):
             "Empates": 0
         }}
 
-print("¿Cómo te llamas?") 
-player = input("Ingresa tu nombre: ")
-players = loadGame(player)
 
-while True:
-    user = userInput()
-    pc = random.choice(opciones)
-    print(f"La pc ha selecionado  {pc}")
-    if user == pc:
-        userDraw(msg)
-        print(msg["userDraw"])
-    elif [user, pc] in victorias:
-        userWins(msg)
-        print(msg["userWins"])
-    else:
-        userLoses(msg)
-        print(msg["userLoses"])
+def init():
+    global player
+    global players
+    print("¡BIENVENIDO ESTAS JUGANDO A PIEDRA, PAPEL, TIJERAS, LAGARTO, SPOCK!")
+    print("¿Cómo te llamas?")
+    player = input("Ingresa tu nombre: ")
+    players = loadGame(player)
 
-    print(players[player])
-    if SAVE_EACH_CYCLE:
-        saveGame(players)
+    return time.time()
+
+
+def main():
+    global startTime
+    startTime = init()
+    while True:
+        user = userInput()
+        pc = random.choice(opciones)
+        print(f"La pc ha selecionado {pc}")
+        if user == pc:
+            updatePlayStats("Empates")
+        elif [user, pc] in victorias:
+            updatePlayStats("Victorias")
+        else:
+            updatePlayStats("Derrotas")
+
+        print(players[player])
+        if SAVE_EACH_CYCLE:
+            saveGame(players)
+
+
+main()

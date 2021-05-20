@@ -1,6 +1,6 @@
 
 msg = {
-    "userDraw": "\nEmpate",
-    "userWins": "\nGanaste!!" ,
-    "userLoses": "\nPerdiste!!!" 
+    "Empates": "\nEmpate",
+    "Victorias": "\nGanaste!!",
+    "Derrotas": "\nPerdiste!!!"
 }

@@ -1,6 +1,0 @@
-diff a/main.py b/main.py	(rejected hunks)
-@@ -101,2 +101,3 @@
-     print(players[player])
-     if SAVE_EACH_CYCLE:
-\ No newline at end of file
-+        saveGame(players)
